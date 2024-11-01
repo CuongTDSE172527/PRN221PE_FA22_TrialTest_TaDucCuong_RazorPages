@@ -1,0 +1,95 @@
+﻿@page
+@model CandidateManagement_TaDucCuong.Pages.CandidateProfilePage.IndexModel
+
+@{
+    ViewData["Title"] = "Candidate Profiles";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-4">Candidate Profiles</h1>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="fas fa-plus-circle me-2"></i>Add New Candidate
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="input-group mb-3">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search candidates...">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.CandidateProfile[0].Fullname)</th>
+                            <th>@Html.DisplayNameFor(model => model.CandidateProfile[0].Birthday)</th>
+                            <th>@Html.DisplayNameFor(model => model.CandidateProfile[0].ProfileShortDescription)</th>
+                            <th>@Html.DisplayNameFor(model => model.CandidateProfile[0].Posting.PostingId)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CandidateProfile)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@Html.DisplayFor(modelItem => item.Fullname)</strong>
+                                </td>
+                                <td>
+                                    @item.Birthday?.ToString("MMM dd, yyyy")
+                                </td>
+                                <td>
+                                    @if (item.ProfileShortDescription?.Length > 50)
+                                    {
+                                        @(item.ProfileShortDescription.Substring(0, 47) + "...")
+                                    }
+                                    else
+                                    {
+                                        @item.ProfileShortDescription
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">@Html.DisplayFor(modelItem => item.Posting.PostingId)</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <!-- Edit button -->
+                                        <a asp-page="./Edit" asp-route-id="@item.CandidateId" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <!-- Details button -->
+                                        <a asp-page="./Details" asp-route-id="@item.CandidateId" class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-info-circle"></i> Details
+                                        </a>
+                                        <!-- Delete button -->
+                                        <a asp-page="./Delete" asp-route-id="@item.CandidateId" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("table tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}

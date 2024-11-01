@@ -1,0 +1,62 @@
+﻿@page
+@model AuthenticationModel
+@{
+    ViewData["Title"] = "HR Login";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title text-center">@ViewData["Title"]</h2>
+
+                <!-- Display error message if login fails -->
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @Model.ErrorMessage
+                    </div>
+                }
+
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Input.Email" class="form-label">HR Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <input asp-for="Input.Email" class="form-control" placeholder="Enter your email" />
+                        </div>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Input.Password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                            <input asp-for="Input.Password" type="password" class="form-control" placeholder="Enter your password" />
+                        </div>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3 form-check form-switch">
+                        <input asp-for="Input.RememberMe" class="form-check-input" id="rememberMeSwitch" />
+                        <label class="form-check-label" for="rememberMeSwitch">@Html.DisplayNameFor(m => m.Input.RememberMe)</label>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-block">HR Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
